@@ -1,13 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import BigKey from './BigKey'
 import Key from './Key'
+
 
 const Keyboard = () => {
     const keys1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
     const keys2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
     const keys3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+
+    
   return (
     <View style={styles.keyboard}>
+       
       <View style={styles.line1}>
         {keys1.map((key)=>{
             return(
@@ -25,6 +30,7 @@ const Keyboard = () => {
         }
       </View>
       <View style={styles.line1}>
+      <BigKey keyVal={"enter"} />
         {
             keys3.map((key)=>{
                 return(
@@ -32,6 +38,7 @@ const Keyboard = () => {
                 )
             })
         }
+        <BigKey keyVal={"delete"} />
       </View>
     </View>
   )

@@ -1,9 +1,19 @@
-import { StyleSheet, Text, View , TouchableOpacity} from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TouchableOpacity} from 'react-native'
+import React, { useContext } from 'react'
+import { AppContext } from '../screens/Home'
 
 const Key = ({keyVal}) => {
+  const {onSelectLetter, gameOver} = useContext(AppContext);
+
+  const handleKeyPress = ()=>{
+    if(gameOver.gameover) return;
+    onSelectLetter(keyVal);
+  };
+  
+
+
   return (
-    <TouchableOpacity style={styles.key}>
+    <TouchableOpacity style={styles.key} onPress={handleKeyPress}>
       <Text style={{fontWeight:700}}>{keyVal}</Text>
     </TouchableOpacity>
   )

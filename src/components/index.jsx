@@ -8,4 +8,5 @@ import ProfileDetails from "./ProfileDetails";
 import Statistics from "./Statistics";
 import ToggleNavigation from "./ToggleNavigation";
 
-export {Btn, Header, InputField, Logo, Board, Keyboard, ProfileDetails, Statistics, ToggleNavigation}
+
+export {Btn, Header, InputField, Logo, Board, Keyboard, ProfileDetails, Statistics, ToggleNavigation,}
