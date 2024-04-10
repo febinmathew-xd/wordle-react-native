@@ -10,14 +10,14 @@ import avatar8 from '../../assets/images/avatars/08.jpg'
 
 
 
-export const ArrayBoard = [
+export const defaultBoard = [
     ["","","","",""],
     ["","","","",""],
     ["","","","",""],
     ["","","","",""],
     ["","","","",""],
     ["","","","",""],
-]
+];
 
 export const avatarList = [
     {id:1, source:avatar1},

@@ -6,7 +6,7 @@ import {
   Modal, 
   View, 
   TouchableOpacity, 
-  Text} from 'react-native'
+  Text, } from 'react-native'
 
 import { 
   Board, 
@@ -18,9 +18,9 @@ import {
   Statistics, 
   ToggleNavigation } from '../components'
 
-import React, { useState , createContext, useEffect, useCallback, useMemo} from 'react'
+import React, { useState , createContext, useEffect, useCallback, useMemo,} from 'react'
 import {colorTheme} from '../utils/Colors'
-import { ArrayBoard, } from '../utils/utls'
+import { defaultBoard } from '../utils/utls'
 import { wordList } from '../utils/wordList'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { avatarList } from '../utils/utls'
@@ -33,7 +33,7 @@ const Home = () => {
   const [statVisible, setStatVisible] = useState(false);
 
   
-  const [board, setBoard] = useState(ArrayBoard);
+  const [board, setBoard] = useState(defaultBoard);
 
   const [currentAttempt, setCurrentAttempt] = useState({attempt:0, letter:0})
   const [disabledKey, setDisabledKey] = useState([]);
@@ -52,7 +52,7 @@ const Home = () => {
 
 
 
-  console.log('board', board)
+  
   console.log('currentAttempt', currentAttempt)
   console.log('disabled key', disabledKey)
   console.log('yellow key', yellowKey)
@@ -60,6 +60,8 @@ const Home = () => {
   console.log('theme', theme)
   console.log('avatar', avatar)
   console.log('game over', gameOver)
+  console.log('board', board)
+  console.log('array board', defaultBoard)
 
   
 
@@ -67,7 +69,6 @@ const Home = () => {
   
   useEffect(()=>{
     
-
     //api call to get board from backend and setBoard()
     //api call to get correct word and setWord()
     //api call to get disabledkey, yellowkey, green key and set their state
@@ -164,11 +165,12 @@ const Home = () => {
     avatar,
     theme,
     setTheme,
-    setAvatar
+    setAvatar,
+    
 
-  }), [onDelete, setAvatar, onEnter, onSelectLetter,theme, setTheme, board, 
+  }), [onDelete, setAvatar, onEnter, onSelectLetter,theme, setTheme,  
     currentAttempt, disabledKey, yellowKey, greenKey, setGreenKey, setYellowKey, 
-    setDisabledKey,correctWord, gameOver, avatar])
+    setDisabledKey,correctWord, gameOver, avatar,board])
 
 
 

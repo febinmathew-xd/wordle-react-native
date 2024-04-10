@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import React from 'react'
 
-const InputField = ({placeholder,password}) => {
+const InputField = ({onTextChange,placeholder,password=false, type}) => {
   return (
     <TextInput
     style={styles.input}
     placeholder={placeholder}
     secureTextEntry={password}
     underlineColorAndroid='#003566'
+    onChangeText={(value)=> {onTextChange(value, type)}}
     
     />
   )

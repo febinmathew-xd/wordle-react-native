@@ -1,8 +1,32 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ScrollView} from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { InputField, Btn , Logo} from '../components'
 
 const Signup = ({navigation}) => {
+
+  const [userName, setUserName] = useState('')
+  const [password1, setPassword1] = useState('')
+  const [password2, setPassword2] = useState('')
+
+  const handleCredentials = (value, type) =>{
+    if (type==="USERNAME"){
+      setUserName(value)
+    }
+    if (type==="PASSWORD1"){
+      setPassword1(value)
+    }
+    if (type==="PASSWORD2"){
+      setPassword2(value)
+    }
+  }
+
+
+  console.log(userName)
+  console.log(password1)
+  console.log(password2)
+
+
+
   return (
     <SafeAreaView style={styles.container}>
        <StatusBar backgroundColor='#000814' />
@@ -19,17 +43,22 @@ const Signup = ({navigation}) => {
 
         <InputField 
         placeholder={'Enter a username'}
-        password={false}
+        type={"USERNAME"}
+        onTextChange={handleCredentials}
         />
 
         <InputField 
         placeholder={'Enter a password'}
         password={true}
+        type={"PASSWORD1"}
+        onTextChange={handleCredentials}
         />  
 
-<InputField 
+        <InputField 
         placeholder={'Enter password again'}
         password={true}
+        type={"PASSWORD2"}
+        onTextChange={handleCredentials}
         />  
 
         <Btn navigation={navigation}  title='Signup'/>

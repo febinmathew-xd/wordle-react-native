@@ -1,15 +1,18 @@
-import { StyleSheet, Text, View , Button , TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View , Button , TouchableOpacity, ActivityIndicator} from 'react-native'
 import React from 'react'
 
 
-export default function Btn({title, navigation}) {
+export default function Btn({title, navigation , loading=false}) {
   return (
     <TouchableOpacity 
     onPress={()=> navigation.navigate("Home")}
     style={styles.btn}>
+      {loading ?
+      <ActivityIndicator  size={"small"} color={'white'} />:
         <Text style={styles.title}>
           {title}
         </Text>
+}
     </TouchableOpacity>
 
     
