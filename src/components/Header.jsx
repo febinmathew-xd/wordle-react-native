@@ -7,7 +7,7 @@ import Avatar from './Avatar'
 
 
 
-const Header = ({ setStatVisible}) => {
+const Header = ({ onStatPress, onIconPress, setStatVisible}) => {
   const {theme, avatar} = useContext(AppContext);
   return (
     <View style={[styles.header, {backgroundColor:theme.primary}]}>
@@ -16,14 +16,14 @@ const Header = ({ setStatVisible}) => {
       <View style={{flexDirection: 'row', alignItems:'center', gap:13, opacity:0.9}}>
 
         <TouchableOpacity onPress={()=> {
-          
+          onStatPress()
           setStatVisible(true);
         }}>
           <Icon  name='leaderboard' size={30}  />
         </TouchableOpacity>
         
          <TouchableOpacity onPress={()=> {
-          
+          onIconPress()
           setStatVisible(true);
          }}>
            <Avatar img={avatar} width={32} borderWidth={2} color={'white'} isMain={true} />

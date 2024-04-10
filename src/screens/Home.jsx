@@ -53,15 +53,7 @@ const Home = () => {
 
 
   
-  console.log('currentAttempt', currentAttempt)
-  console.log('disabled key', disabledKey)
-  console.log('yellow key', yellowKey)
-  console.log('green key', greenKey)
-  console.log('theme', theme)
-  console.log('avatar', avatar)
-  console.log('game over', gameOver)
-  console.log('board', board)
-  console.log('array board', defaultBoard)
+
 
   
 
@@ -188,7 +180,7 @@ const Home = () => {
     value={values}>
     <StatusBar backgroundColor={theme.primary}/>
     <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
-        <Header setStatVisible={setStatVisible}/>
+        <Header onStatPress={handleProfle} onIconPress={handleSettings} setStatVisible={setStatVisible}/>
         <Board/>
         <Keyboard/>
     
