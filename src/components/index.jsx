@@ -7,6 +7,9 @@ import Keyboard from "./Keyboard";
 import ProfileDetails from "./ProfileDetails";
 import Statistics from "./Statistics";
 import ToggleNavigation from "./ToggleNavigation";
+import Chart from "./Chart";
+import Settings from "./Settings";
 
 
-export {Btn, Header, InputField, Logo, Board, Keyboard, ProfileDetails, Statistics, ToggleNavigation,}
+export {Btn, Header, InputField, Logo, Board, Keyboard,
+     ProfileDetails, Statistics, ToggleNavigation, Chart,Settings,}

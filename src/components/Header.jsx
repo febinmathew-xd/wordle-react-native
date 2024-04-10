@@ -1,23 +1,32 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { AppContext } from '../screens/Home'
+import Avatar from './Avatar'
 
 
 
 
-const Header = ({setStatVisible}) => {
+const Header = ({ setStatVisible}) => {
+  const {theme, avatar} = useContext(AppContext);
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, {backgroundColor:theme.primary}]}>
       <Text
       style={styles.title}>Wordle</Text>
-      <View style={{flexDirection: 'row', alignItems:'center', gap:8, opacity:0.9}}>
+      <View style={{flexDirection: 'row', alignItems:'center', gap:13, opacity:0.9}}>
 
-        <TouchableOpacity onPress={()=>setStatVisible(true)}>
+        <TouchableOpacity onPress={()=> {
+          
+          setStatVisible(true);
+        }}>
           <Icon  name='leaderboard' size={30}  />
         </TouchableOpacity>
         
-         <TouchableOpacity>
-           <Icon name='help' size={28} />
+         <TouchableOpacity onPress={()=> {
+          
+          setStatVisible(true);
+         }}>
+           <Avatar img={avatar} width={32} borderWidth={2} color={'white'} isMain={true} />
          </TouchableOpacity>
          
       </View>
@@ -32,11 +41,10 @@ const styles = StyleSheet.create({
   header:{
     width: '100%',
     height: 70,
-    backgroundColor: '#2196f3',
     alignItems:'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: 15
+    paddingHorizontal: 18
   },
   title: {
     fontFamily: 'Pacifico-Regular',

@@ -1,13 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import BigKey from './BigKey'
 import Key from './Key'
-
+import { AppContext } from '../screens/Home'
 
 const Keyboard = () => {
     const keys1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
     const keys2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
     const keys3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+    
+    const {disabledKey, greenKey, yellowKey} = useContext(AppContext);
+
+
 
     
   return (
@@ -16,7 +20,13 @@ const Keyboard = () => {
       <View style={styles.line1}>
         {keys1.map((key)=>{
             return(
-                <Key key={key} keyVal={key}/>
+                <Key 
+                key={key} 
+                keyVal={key}
+                disabled={disabledKey.includes(key)}
+                green={greenKey.includes(key)}
+                yellow={yellowKey.includes(key)}
+                />
             )
         })}
       </View>
@@ -24,7 +34,12 @@ const Keyboard = () => {
         {
             keys2.map((key)=>{
                 return(
-                    <Key keyVal={key} key={key}/>
+                    <Key 
+                    keyVal={key} 
+                    key={key}
+                    disabled={disabledKey.includes(key)}
+                    green={greenKey.includes(key)}
+                    yellow={yellowKey.includes(key)}/>
                 )
             })
         }
@@ -34,7 +49,12 @@ const Keyboard = () => {
         {
             keys3.map((key)=>{
                 return(
-                    <Key keyVal={key} key={key}/>
+                    <Key 
+                    keyVal={key} 
+                    key={key}
+                    disabled={disabledKey.includes(key)}
+                    green={greenKey.includes(key)}
+                    yellow={yellowKey.includes(key)}/>
                 )
             })
         }

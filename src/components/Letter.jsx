@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import React, { memo, useContext, useEffect,  } from 'react'
 import { AppContext } from '../screens/Home'
 
 const Letter = ({letterPos, attemptVal}) => {
@@ -9,14 +9,16 @@ const Letter = ({letterPos, attemptVal}) => {
     setDisabledKey, 
     setYellowKey,
     correctWord, 
-    currentAttempt
+    currentAttempt,
+    theme
 
   } = useContext(AppContext);
 
     const letter = board[attemptVal][letterPos];
     const correct = correctWord.toUpperCase()[letterPos] === letter;
     const almost = !correct && letter!="" && correctWord.toUpperCase().includes(letter);
-    const notCorrect = !correct && !almost && letter!="" && !correctWord.toUpperCase().includes(letter);
+    
+    
    
   useEffect(()=>{
      if (letter!="" && !correct && !almost){
@@ -37,16 +39,24 @@ const Letter = ({letterPos, attemptVal}) => {
   },[currentAttempt.attempt]);
 
 
+  //animation
+
+  
+
   return (
-    <View style={[styles.letter,correct && currentAttempt.attempt>attemptVal? styles.green  : almost && currentAttempt.attempt>attemptVal? styles.yellow : currentAttempt.attempt>attemptVal?styles.grey : null  ]}>
-      <Text style={[styles.text]}>
+   
+    
+       <View style={[styles.letter, {borderColor:theme.primary, backgroundColor:theme.background} ,correct && currentAttempt.attempt>attemptVal? styles.green  : almost && currentAttempt.attempt>attemptVal? styles.yellow : currentAttempt.attempt>attemptVal?styles.grey : null  ]}>
+      <Text style={[styles.text, {color:theme.primary}, currentAttempt.attempt>attemptVal ? styles.whiteText: null]}>
         {board[attemptVal][letterPos]}
       </Text>
     </View>
+    
+    
   )
 }
 
-export default Letter
+export default memo(Letter) 
 
 const styles = StyleSheet.create({
     letter:{
@@ -54,28 +64,34 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 0.5,
         borderRadius:1,
-        borderColor: '#2196f3',
+        
         alignItems:'center',
         justifyContent: 'center',
-        backgroundColor: "#000814"
+        
         
 
     },
     green:{
-        backgroundColor:"green"
+        backgroundColor:"#04e762",
+        borderColor:'#04e762'
     },
     yellow: {
-      backgroundColor:"yellow"
+      backgroundColor:"#ffd500",
+      borderColor:"#ffd500"
 
     },
     grey: {
-      backgroundColor:"gray"
+      backgroundColor:"#618985",
+      borderColor: '#618985'
       
     },
     text:{
-      fontWeight:600, 
-      fontSize:20 , 
-      color: '#2196f3'
+      fontWeight:'bold', 
+      fontSize:26, 
+      
     },
+    whiteText:{
+      color:'white'
+    }
     
 })

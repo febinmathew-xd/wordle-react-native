@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import Letter from './Letter'
+import { AppContext } from '../screens/Home'
 
 const Board = () => {
+  const {theme} = useContext(AppContext)
   return (
-    <View style={styles.board}>
+    <View style={[styles.board, {backgroundColor:theme.background ,}]}>
       <View style={{ flexDirection:'row', gap:5}}>
         <Letter letterPos={0} attemptVal={0}/>
         <Letter letterPos={1} attemptVal={0}/>
@@ -62,7 +64,6 @@ const styles = StyleSheet.create({
     board : {
         width: '100%',
         height: 380,
-        backgroundColor: '#000814',
         padding: 15,
         gap: 5,
         alignItems: 'center'

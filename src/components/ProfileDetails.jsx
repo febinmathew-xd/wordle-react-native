@@ -1,12 +1,18 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
+import Avatar from './Avatar'
+import { AppContext } from '../screens/Home'
 
-const ProfileDetails = ({imgUrl, userName, dateJoined}) => {
+const ProfileDetails = ({img, userName, dateJoined}) => {
+  const {theme} = useContext(AppContext)
   return (
     <View style={styles.displayPictureContainer} > 
-    <View style={styles.imageContainer}>
-       
-    </View>
+     <Avatar 
+     img={img} 
+     width={50}
+     borderWidth={3}
+     color={theme.primary}
+      />
       
       <View style={styles.details}>
         <Text>
@@ -24,16 +30,13 @@ export default ProfileDetails
 
 const styles = StyleSheet.create({
     displayPictureContainer:{
-
+      flexDirection: 'row',
+      marginTop: 50,
+      alignItems: 'center'    
     },
     details: {
+      paddingLeft: 10
 
     },
-    image: {
-        width:100,
-        height:100
-    },
-    imageContainer:{
-        
-    }
+    
 })
