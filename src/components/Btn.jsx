@@ -2,10 +2,10 @@ import { StyleSheet, Text, View , Button , TouchableOpacity, ActivityIndicator} 
 import React from 'react'
 
 
-export default function Btn({title, navigation , loading=false}) {
+export default function Btn({title, onButtonPress , loading=false}) {
   return (
     <TouchableOpacity 
-    onPress={()=> navigation.navigate("Home")}
+    onPress={()=> onButtonPress()}
     style={styles.btn}>
       {loading ?
       <ActivityIndicator  size={"small"} color={'white'} />:
@@ -23,7 +23,7 @@ export default function Btn({title, navigation , loading=false}) {
 const styles = StyleSheet.create({
     btn:{
         backgroundColor: "#2196f3",
-        maxHeight: 60,
+        height: 53,
         borderRadius:20,
         flex:1,
         justifyContent:'center',

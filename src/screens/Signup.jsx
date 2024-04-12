@@ -18,12 +18,14 @@ const Signup = ({navigation}) => {
     if (type==="PASSWORD2"){
       setPassword2(value)
     }
+  };
+
+  const handleSignupPress = ()=>{
+
   }
 
 
-  console.log(userName)
-  console.log(password1)
-  console.log(password2)
+
 
 
 
@@ -61,7 +63,7 @@ const Signup = ({navigation}) => {
         onTextChange={handleCredentials}
         />  
 
-        <Btn navigation={navigation}  title='Signup'/>
+        <Btn onButtonPress={handleSignupPress}  title='Signup'/>
 
         
         <View style={styles.horizontalLine}>

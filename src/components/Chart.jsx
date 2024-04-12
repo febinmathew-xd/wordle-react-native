@@ -11,7 +11,7 @@ const Chart = () => {
     const two = 6
     const three = 8
     const four = 0
-    const five = 1
+    const five = 2
     const six =3
     const total = one + two + three + four + five + six
 

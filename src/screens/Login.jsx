@@ -1,11 +1,21 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity,  ScrollView, StatusBar} from 'react-native'
-import React, { useState } from 'react'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity,  ScrollView, StatusBar,} from 'react-native'
+import React, { useContext, useState } from 'react'
 import { InputField, Btn , Logo} from '../components'
+import Axios from '../utils/api'
+import { storeData } from '../utils/storage'
+import { AuthContext } from '../routes/Routes'
+
 
 const Login = ({navigation}) => {
 
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [userNameError, setUserNameError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
+  const {setIsAuthenticated} = useContext(AuthContext);
+
+
 
   const handleCredentials = (value, type) =>{
     if (type === "PASSWORD"){
@@ -16,8 +26,48 @@ const Login = ({navigation}) => {
     }
   }
 
-  console.log(userName)
-  console.log(password)
+  const onLoginPress =  ()=> {
+
+    if(userName && password){
+    setLoading(true);
+    setPasswordError(false);
+    setUserNameError(false);
+    Axios.post('login/', {username:userName, password:password}).then((response)=>{
+      if(response.data && response.data.user_data){
+        storeData('userData', response.data.user_data).then(()=>{
+          console.log("userData saved successfully")
+          setIsAuthenticated(true)
+          
+        
+        }).catch((err)=>console.log(err))
+        
+      }
+    }).catch((error)=>{
+      
+      if(error){
+        console.log("error~", error)
+      }
+      if(error.response && error.response.data && error.response.data.error){
+        console.log("error reponse data", error.response.data)
+        const errorMessage = error.response.data.error
+        if (errorMessage.includes('username')){
+          setUserNameError(true)
+        }else if (errorMessage.includes('password')){
+          setPasswordError(true)
+        }
+        
+      }
+      
+      
+      
+      
+    }).finally(()=>setLoading(false))
+  }
+
+  };
+
+
+
 
 
 
@@ -34,20 +84,22 @@ const Login = ({navigation}) => {
         <View style={styles.form}>
         
         <InputField 
-        placeholder={'Email or username'}
+        error={userNameError}
+        placeholder={'Username'}
         type={"USERNAME"}
         onTextChange={handleCredentials}
 
         />
 
         <InputField 
+        error={passwordError}
         placeholder={'Password'}
         type={"PASSWORD"}
         password={true}
         onTextChange={handleCredentials}
         />  
 
-        <Btn navigation={navigation} title='Login'/>
+        <Btn loading={loading} onButtonPress={onLoginPress} title='Login'/>
 
         <TouchableOpacity style={styles.passwordReset}>
           <Text style={styles.passText}>

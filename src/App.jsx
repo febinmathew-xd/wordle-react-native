@@ -9,14 +9,13 @@
 
 
 import React, {useState, useEffect} from 'react'
-import { View, Text, StyleSheet, SafeAreaView , StatusBar, PermissionsAndroid} from 'react-native'
-import {  Login, Signup , Home} from './screens';
+
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { getPermission } from './utils/permissions';
+import Routes from './routes/Routes';
 
 
-const Stack = createNativeStackNavigator()
 
 
 
@@ -42,20 +41,7 @@ function App() {
   
   return (
    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen
-        name='Login'
-        component={Login}
-        options={{headerShown:false}}/>
-        <Stack.Screen
-        name='Signup'
-        component={Signup}
-        options={{headerShown:false}}/>
-        <Stack.Screen
-        name='Home'
-        component={Home}
-        options={{headerShown:false}}/>
-      </Stack.Navigator>
+      <Routes/>
    </NavigationContainer>
   )
 }

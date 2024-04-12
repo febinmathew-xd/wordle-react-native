@@ -13,7 +13,11 @@ const Header = ({ onStatPress, onIconPress, setStatVisible}) => {
     <View style={[styles.header, {backgroundColor:theme.primary}]}>
       <Text
       style={styles.title}>Wordle</Text>
-      <View style={{flexDirection: 'row', alignItems:'center', gap:13, opacity:0.9}}>
+      <View style={{flexDirection: 'row', alignItems:'center', gap:12, opacity:0.9}}>
+
+        <TouchableOpacity>
+          <Icon name='help' size={28} />
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={()=> {
           onStatPress()
@@ -22,7 +26,7 @@ const Header = ({ onStatPress, onIconPress, setStatVisible}) => {
           <Icon  name='leaderboard' size={30}  />
         </TouchableOpacity>
         
-         <TouchableOpacity onPress={()=> {
+         <TouchableOpacity style={{opacity:0.8}} onPress={()=> {
           onIconPress()
           setStatVisible(true);
          }}>

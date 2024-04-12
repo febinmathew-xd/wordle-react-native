@@ -18,19 +18,22 @@ import {
   Statistics, 
   ToggleNavigation } from '../components'
 
-import React, { useState , createContext, useEffect, useCallback, useMemo,} from 'react'
+import React, { useState , createContext, useEffect, useCallback, useMemo, useContext,} from 'react'
 import {colorTheme} from '../utils/Colors'
 import { defaultBoard } from '../utils/utls'
 import { wordList } from '../utils/wordList'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { avatarList } from '../utils/utls'
+import ProfileModal from '../components/ProfileModal'
+import Axios from '../utils/api'
+import { AuthContext } from '../routes/Routes'
 
 
 export const AppContext = createContext();
   
 
 const Home = () => {
-  const [statVisible, setStatVisible] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
 
   
   const [board, setBoard] = useState(defaultBoard);
@@ -49,6 +52,8 @@ const Home = () => {
   const [theme, setTheme] = useState(colorTheme[0])
   const [profileView, setProfileView] = useState(true)
   const [settingsView, setSettingsView] = useState(false)
+  const {userData} = useContext(AuthContext);
+  const [profile, setProfile] = useState({})
 
 
 
@@ -60,6 +65,16 @@ const Home = () => {
 
   
   useEffect(()=>{
+
+    //api call to get profile details
+
+    Axios.get(`profile/?userId=${userData.userid}`).then((response)=>{
+      console.log(response.data)
+    }).catch((error)=>{
+      if(error?.response?.data?.error){
+        console.log(error.response.data.error)
+      }
+    })
     
     //api call to get board from backend and setBoard()
     //api call to get correct word and setWord()
@@ -158,11 +173,15 @@ const Home = () => {
     theme,
     setTheme,
     setAvatar,
+    handleProfle,
+    handleSettings,
+    profileView,
+    settingsView
     
 
   }), [onDelete, setAvatar, onEnter, onSelectLetter,theme, setTheme,  
     currentAttempt, disabledKey, yellowKey, greenKey, setGreenKey, setYellowKey, 
-    setDisabledKey,correctWord, gameOver, avatar,board])
+    setDisabledKey,correctWord, gameOver, avatar,board, handleProfle, handleSettings, profileView, settingsView])
 
 
 
@@ -180,39 +199,13 @@ const Home = () => {
     value={values}>
     <StatusBar backgroundColor={theme.primary}/>
     <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
-        <Header onStatPress={handleProfle} onIconPress={handleSettings} setStatVisible={setStatVisible}/>
+        <Header onStatPress={handleProfle} onIconPress={handleSettings} setStatVisible={setProfileVisible}/>
         <Board/>
         <Keyboard/>
+
+        <ProfileModal visible={profileVisible} setVisible={setProfileVisible} />
     
-    <Modal
-    visible={statVisible}
-    onRequestClose={()=> setStatVisible(false)}
-    transparent={true}
-    animationType='slide'>
-
-    <View style={styles.modalContainer}>
-      <View style={[styles.box, {backgroundColor:theme.background, borderColor:theme.primary}]}> 
-      <View style={{position:'absolute', right:0, top:0}}>
-
-        <TouchableOpacity style={{padding:10}} onPress={()=>setStatVisible(false)}>
-            <Icon name='cancel' size={30} color={theme.primary} />
-        </TouchableOpacity>
-        
-      </View>
-      <ProfileDetails img={avatar} userName={'febin'} dateJoined={'May 2024'} />
-      <ToggleNavigation isProfile={profileView} isSettings={settingsView} onPressProfile={handleProfle} onPressSettings={handleSettings}/>
-     {profileView && <View>
-      <Statistics/>
-      <Chart/>
-      </View>}
-      {settingsView && <Settings/> }
-      
-
-      </View>
-
-    </View>
-    </Modal>
-        
+    
           
         
         
@@ -235,22 +228,7 @@ const styles = StyleSheet.create({
         
          
     },
-    box:{
-     
-      width: '100%',
-      height: 470,
-      borderWidth: 0.5,
-     
-      borderRadius:10,
-      elevation: 10,
-      paddingHorizontal:16
-    },
-    modalContainer: {
-      flex:1,
-      justifyContent:'center',
-      alignItems: 'center',
-      paddingHorizontal: 20
-    }
+    
 
    
     
