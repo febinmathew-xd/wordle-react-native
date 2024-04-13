@@ -32,3 +32,11 @@ export const avatarList = [
     
     
 ]
+
+export const defaultGame = {
+    board : defaultBoard,
+    gameOver: {gameover:false, guessedWord:false},
+    currentAttempt: {attempt:0, letter:0},
+    
+ 
+}

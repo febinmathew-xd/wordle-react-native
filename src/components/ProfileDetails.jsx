@@ -3,7 +3,17 @@ import React, { useContext } from 'react'
 import Avatar from './Avatar'
 import { AppContext } from '../screens/Home'
 
-const ProfileDetails = ({img, userName, dateJoined}) => {
+const ProfileDetails = ({img, userName, dateJoined, email}) => {
+
+  const date = new Date(dateJoined)
+  date.setHours(date.getHours()+5)
+  date.setMinutes(date.getMinutes()+30)
+  const options= {day:"numeric", month:"long", year: "numeric"}
+  const formattedDate= date.toLocaleDateString('en-IN', options)
+
+
+
+
   const {theme} = useContext(AppContext)
   return (
     <View style={styles.displayPictureContainer} > 
@@ -19,7 +29,10 @@ const ProfileDetails = ({img, userName, dateJoined}) => {
             @{userName}
         </Text>
         <Text>
-            Joined: {dateJoined}
+            Email: {email}
+        </Text>
+        <Text>
+            Joined: {formattedDate}
         </Text>
       </View>
     </View>

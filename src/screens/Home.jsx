@@ -27,6 +27,7 @@ import { avatarList } from '../utils/utls'
 import ProfileModal from '../components/ProfileModal'
 import Axios from '../utils/api'
 import { AuthContext } from '../routes/Routes'
+import { getData, storeData } from '../utils/storage'
 
 
 export const AppContext = createContext();
@@ -36,14 +37,21 @@ const Home = () => {
   const [profileVisible, setProfileVisible] = useState(false);
 
   
-  const [board, setBoard] = useState(defaultBoard);
+  const [board, setBoard] = useState([
+    ["","","","",""],
+    ["","","","",""],
+    ["","","","",""],
+    ["","","","",""],
+    ["","","","",""],
+    ["","","","",""],
+]);
 
   const [currentAttempt, setCurrentAttempt] = useState({attempt:0, letter:0})
   const [disabledKey, setDisabledKey] = useState([]);
   const [greenKey, setGreenKey] = useState([]);
   const [yellowKey, setYellowKey] = useState([]);
   const [gameOver, setGameOver] = useState({gameover:false, guessedWord:false});
-  const [correctWord, setCorrectWord] = useState("febin");
+  const [correctWord, setCorrectWord] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [flipAnimation, setFlipAnimation] = useState(false);
@@ -67,14 +75,80 @@ const Home = () => {
   useEffect(()=>{
 
     //api call to get profile details
-
-    Axios.get(`profile/?userId=${userData.userid}`).then((response)=>{
-      console.log(response.data)
+    
+    Axios.get(`profile/?userId=${userData?.id}`).then((response)=>{
+      
+      setProfile(response.data)
     }).catch((error)=>{
+      console.log(error)
       if(error?.response?.data?.error){
         console.log(error.response.data.error)
       }
     })
+
+    //api call to get correct answer 
+
+  
+
+    
+
+    //load game data stored in asyncStorage
+    const loadGameData = async (correctWord) =>{
+      console.log("correct word line107",correctWord)
+      try{
+        const answer = await getData("correctWord")
+        console.log("answer loadgame data ", answer)
+
+        if(answer===correctWord || answer===null){
+          try{
+               const gameData = await getData("gameData")
+               console.log("gamedata load game data", gameData)
+               setBoard(gameData.board)
+               setCurrentAttempt(gameData.currentAttempt)
+               setGameOver(gameData.gameOver)
+
+               if(answer===null){
+                storeData("correctWord", correctWord).then(()=>{}).catch(()=>{})
+               }
+              
+
+          }catch(error){
+            console.log(error)
+          }
+        }else{
+          storeData("correctWord", correctWord).then(()=>{
+            console.log("correct word stored")
+          }).catch((error)=>console.log(error))
+          storeData("gameData", {board:board, currentAttempt:currentAttempt, gameOver:gameOver}).then(()=>{
+            console.log("default game data saved when correct answer changed")
+          }).catch((error)=>console.log(error))
+        }
+
+
+
+      }catch(error){
+        console.log(error)
+      }
+      
+
+    }
+
+    const fetchAnswer = async ()=>{
+      try{
+        const response = await Axios.get('get/answer/')
+        setCorrectWord(wordList[response.data.correct_answer])
+        console.log("is there",response.data)
+        console.log(correctWord)
+        loadGameData(wordList[response?.data?.correct_answer])
+        
+      }catch(error){
+        console.log("answer fetching axios error", error)
+      }
+    };
+
+    fetchAnswer();
+   
+    
     
     //api call to get board from backend and setBoard()
     //api call to get correct word and setWord()
@@ -118,17 +192,34 @@ const Home = () => {
       //}
       //api call to update board on backend
       //api call to update currentAttempt on backend
-      setFlipAnimation(true);
-      setTimeout(() => {
-        setCurrentAttempt({attempt:currentAttempt.attempt+1, letter:0});
-        setFlipAnimation(false)
-      }, 500);
+
+
+     
+      
+      setCurrentAttempt({attempt:currentAttempt.attempt+1, letter:0});
+      storeData("gameData", {board:board, currentAttempt:{attempt:currentAttempt.attempt+1, letter:0}, gameOver:gameOver}).then(()=>{
+        console.log("gameData updated for correct word in word list")
+      }).catch((error)=>{
+        console.log(error)
+      })
+
+     
+      
+
+
     }
     else{
       setError(true);
     }
     if (currentWord.toLowerCase()===correctWord){
       setGameOver({gameover:true, guessedWord:true})
+
+
+      storeData("gameData", {board:board, currentAttempt:{attempt:currentAttempt.attempt+1, letter:0}, gameOver:{gameover:true, guessedWord:true}}).then(()=>{
+        console.log("gameData updated for game over for correct guess")
+      }).catch((error)=>{
+        console.log(error)
+      })
       //api call to increment win count also update winstreak and update max winstreak if needed
       //update win distribution according to attempt value
       //api call to update gaveOver status
@@ -136,6 +227,13 @@ const Home = () => {
 
     if (currentAttempt.attempt ===6){
       setGameOver({gameover:true, guessedWord:false})
+
+
+      storeData("gameData", {board:board, currentAttempt:{attempt:currentAttempt.attempt+1, letter:0}, gameOver:{gameover:true, guessedWord:false}}).then(()=>{
+        console.log("gameData updated for game fail")
+      }).catch((error)=>{
+        console.log(error)
+      })
       //api call to update gameover status
     }
 
@@ -176,12 +274,14 @@ const Home = () => {
     handleProfle,
     handleSettings,
     profileView,
-    settingsView
+    settingsView,
+    profile
     
 
   }), [onDelete, setAvatar, onEnter, onSelectLetter,theme, setTheme,  
     currentAttempt, disabledKey, yellowKey, greenKey, setGreenKey, setYellowKey, 
-    setDisabledKey,correctWord, gameOver, avatar,board, handleProfle, handleSettings, profileView, settingsView])
+    setDisabledKey,correctWord, gameOver, avatar,board, handleProfle, handleSettings, 
+    profileView, settingsView, profile])
 
 
 

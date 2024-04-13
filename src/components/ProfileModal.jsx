@@ -4,33 +4,14 @@ import { AppContext } from '../screens/Home'
 import { ProfileDetails, ToggleNavigation,Statistics, Chart, Settings } from '.'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { getData } from '../utils/storage'
+import { AuthContext } from '../routes/Routes'
 
-const ProfileModal = ({visible, setVisible,}) => {
+const ProfileModal = ({visible, setVisible, }) => {
     const {theme, avatar, profileView, settingsView, handleProfle, handleSettings} = useContext(AppContext);
-    const [userName, setUserName] =useState('')
+    const {userData} = useContext(AuthContext);
+   
 
-    useEffect(()=>{
-
-      const getUserData = async ()=> {
-
-        try {
-          const userData = await getData('userData')
-          if(userData){
-            setUserName(userData.username)
-          }
-        }catch(err){
-          console.log("error while fetching user data : profilemodal line:18")
-        }
-
-
-
-      }
-
-      getUserData();
-
-
-
-    },[])
+   
 
 
 
@@ -51,7 +32,7 @@ const ProfileModal = ({visible, setVisible,}) => {
         </TouchableOpacity>
         
       </View>
-      <ProfileDetails img={avatar} userName={userName} dateJoined={'May 2024'} />
+      <ProfileDetails img={avatar} userName={userData.username} dateJoined={userData.date_joined} email={userData.email} />
       <ToggleNavigation isProfile={profileView} isSettings={settingsView} onPressProfile={handleProfle} onPressSettings={handleSettings}/>
      {profileView && <View>
       <Statistics/>

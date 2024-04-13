@@ -4,13 +4,17 @@ import React, { useContext } from 'react'
 import { AppContext } from '../screens/Home'
 
 const Statistics = () => {
-  console.log('stat rendered')
-  const {theme} = useContext(AppContext)
+  
+  const {theme, profile} = useContext(AppContext)
+  
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <Text style={styles.value}>
-          23
+          {profile.total}
         </Text>
         <Text style={[styles.label, {color:theme.primary}]}>
           Played
@@ -20,7 +24,7 @@ const Statistics = () => {
 
       <View style={styles.subContainer}>
         <Text style={styles.value}>
-          100
+          {profile.total===0? 0:Math.floor((profile.won/profile.total)*100)}
         </Text>
         <Text style={[styles.label, {color:theme.primary}]}>
           Win %
@@ -30,7 +34,7 @@ const Statistics = () => {
 
       <View style={styles.subContainer}>
         <Text style={styles.value}>
-          76
+          {profile.winstreak}
         </Text>
         <Text style={[styles.label, {color:theme.primary}]}>
           Current Streak
@@ -40,7 +44,7 @@ const Statistics = () => {
 
       <View style={styles.subContainer}>
         <Text style={styles.value}>
-          67
+          {profile.max_winstreak}
         </Text>
         <Text style={[styles.label, {color:theme.primary}]}>
           Max Streak

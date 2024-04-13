@@ -1,26 +1,61 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ScrollView} from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { InputField, Btn , Logo} from '../components'
+import Axios from '../utils/api'
+import { storeData } from '../utils/storage'
+import { AuthContext } from '../routes/Routes'
+import { defaultGame } from '../utils/utls'
 
 const Signup = ({navigation}) => {
 
   const [userName, setUserName] = useState('')
-  const [password1, setPassword1] = useState('')
-  const [password2, setPassword2] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const {setIsAuthenticated, setUserData} = useContext(AuthContext)
 
   const handleCredentials = (value, type) =>{
     if (type==="USERNAME"){
       setUserName(value)
     }
-    if (type==="PASSWORD1"){
-      setPassword1(value)
+    if (type==="PASSWORD"){
+      setPassword(value)
     }
-    if (type==="PASSWORD2"){
-      setPassword2(value)
+    if (type==="EMAIL"){
+      setEmail(value)
     }
   };
 
   const handleSignupPress = ()=>{
+    if(userName && password && email){
+      setLoading(true)
+      Axios.post('user/', {username:userName.toLowerCase(), password:password, email:email.toLowerCase()}).then((response)=>{
+        console.log(response.data)
+        if(response.data){
+          storeData("userData", response.data).then(()=>{
+            setUserData(response.data)
+            
+          }).catch((error)=> {
+            console.log("signup page storing data error", error)
+          })
+
+
+          storeData("gameData", defaultGame).then(()=>{
+            setIsAuthenticated(true)
+          }).catch((error)=>console.log(error))
+
+
+
+        }
+
+      }).catch((error)=>{
+        console.log(error?.response)
+      }).finally(()=>{
+        setLoading(false)
+      })
+
+
+    }
 
   }
 
@@ -44,26 +79,25 @@ const Signup = ({navigation}) => {
         
 
         <InputField 
-        placeholder={'Enter a username'}
-        type={"USERNAME"}
+        placeholder={'Enter an email'}
+        type={"EMAIL"}
         onTextChange={handleCredentials}
         />
 
         <InputField 
-        placeholder={'Enter a password'}
-        password={true}
-        type={"PASSWORD1"}
+        placeholder={'Enter a username'}
+        type={"USERNAME"}
         onTextChange={handleCredentials}
         />  
 
         <InputField 
-        placeholder={'Enter password again'}
+        placeholder={'Enter a password '}
         password={true}
-        type={"PASSWORD2"}
+        type={"PASSWORD"}
         onTextChange={handleCredentials}
         />  
 
-        <Btn onButtonPress={handleSignupPress}  title='Signup'/>
+        <Btn loading={loading} onButtonPress={handleSignupPress}  title='Signup'/>
 
         
         <View style={styles.horizontalLine}>

@@ -5,14 +5,14 @@ import { AppContext } from '../screens/Home'
 
 const Chart = () => {
 
-    const {theme} = useContext(AppContext)
+    const {theme,profile} = useContext(AppContext)
 
-    const one = 5
-    const two = 6
-    const three = 8
-    const four = 0
-    const five = 2
-    const six =3
+    const one = profile.guess_distribution_1
+    const two = profile.guess_distribution_2
+    const three = profile.guess_distribution_3
+    const four = profile.guess_distribution_4
+    const five = profile.guess_distribution_5
+    const six =profile.guess_distribution_6
     const total = one + two + three + four + five + six
 
 

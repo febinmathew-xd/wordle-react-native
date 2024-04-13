@@ -4,6 +4,7 @@ import { InputField, Btn , Logo} from '../components'
 import Axios from '../utils/api'
 import { storeData } from '../utils/storage'
 import { AuthContext } from '../routes/Routes'
+import { defaultGame } from '../utils/utls'
 
 
 const Login = ({navigation}) => {
@@ -13,7 +14,7 @@ const Login = ({navigation}) => {
   const [loading, setLoading] = useState(false)
   const [userNameError, setUserNameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
-  const {setIsAuthenticated} = useContext(AuthContext);
+  const {setIsAuthenticated, setUserData} = useContext(AuthContext);
 
 
 
@@ -32,14 +33,19 @@ const Login = ({navigation}) => {
     setLoading(true);
     setPasswordError(false);
     setUserNameError(false);
-    Axios.post('login/', {username:userName, password:password}).then((response)=>{
-      if(response.data && response.data.user_data){
-        storeData('userData', response.data.user_data).then(()=>{
+    Axios.post('login/', {username:userName.toLowerCase(), password:password}).then((response)=>{
+      if(response.data ){
+        storeData('userData', response.data).then(()=>{
           console.log("userData saved successfully")
-          setIsAuthenticated(true)
+          setUserData(response.data)
+          
           
         
         }).catch((err)=>console.log(err))
+
+        storeData('gameData', defaultGame).then(()=>{
+          setIsAuthenticated(true)
+        }).catch((error)=>console.log(error))
         
       }
     }).catch((error)=>{

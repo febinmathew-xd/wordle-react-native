@@ -10,11 +10,12 @@ import { clearAllData } from '../utils/storage'
 
 const Settings = () => {
     const {theme, setAvatar} = useContext(AppContext)
-    const {setIsAuthenticated} = useContext(AuthContext)
+    const {setIsAuthenticated, setUserData} = useContext(AuthContext)
 
     const onLogoutPress = () =>{
       
       clearAllData().then(()=>{
+        
         setIsAuthenticated(false)
       }).catch((error)=>{
         console.log(error)
