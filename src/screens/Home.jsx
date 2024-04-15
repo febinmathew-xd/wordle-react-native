@@ -187,9 +187,15 @@ const Home = () => {
     };
 
     if (wordSet.has(currentWord.toLowerCase())){
-      //if(currentAttempt.attempt===0){
+      if(currentAttempt.attempt===0){
         //api call for profile update -- increment total games by 1
-      //}
+        Axios.patch('profile/', {id:userData?.id, data:{total:profile?.total+1}}).then((response)=>{
+          console.log('total update patch operation response data', response?.data)
+          setProfile(response?.data)
+        }).catch((error)=>{
+          console.log('axios error while updating patch operation of total',error)
+        })
+      }
       //api call to update board on backend
       //api call to update currentAttempt on backend
 
@@ -222,7 +228,48 @@ const Home = () => {
       })
       //api call to increment win count also update winstreak and update max winstreak if needed
       //update win distribution according to attempt value
-      //api call to update gaveOver status
+      
+      //api call to increment win count and update guess distribution
+
+      const updateWonAndGuess= (id, data)=> {
+        Axios.patch('profile/', {id:id, data: data} ).then((response)=>{
+          console.log('won and guess distribution update respose', response?.data)
+          setProfile(response.data)
+        }).catch((error)=>console.log("error updating won and guess distribution", error))
+  
+      }
+
+      const id = userData?.id
+      const newWonNumber = profile?.won +1
+      
+      if (currentAttempt.attempt ===0){
+        const data = {won:newWonNumber, guess_distribution_1: profile.guess_distribution_1+1}
+        updateWonAndGuess(id, data);
+        
+      } else if(currentAttempt.attempt==1){
+        const data = {won:newWonNumber, guess_distribution_2: profile.guess_distribution_2+1}
+        updateWonAndGuess(id, data);
+        
+      }else if(currentAttempt.attempt==2){
+        const data = {won:newWonNumber, guess_distribution_3: profile.guess_distribution_3+1}
+        updateWonAndGuess(id, data);
+        
+      }else if(currentAttempt.attempt==3){
+        const data = {won:newWonNumber, guess_distribution_4: profile.guess_distribution_4+1}
+        updateWonAndGuess(id, data);
+        
+      }else if(currentAttempt.attempt==4){
+        const data = {won:newWonNumber, guess_distribution_5: profile.guess_distribution_5+1}
+        updateWonAndGuess(id, data);
+        
+      }else if(currentAttempt.attempt==5){
+        const data = {won:newWonNumber, guess_distribution_6: profile.guess_distribution_6+1}
+        updateWonAndGuess(id, data);
+        
+      }
+      
+     
+      
     };
 
     if (currentAttempt.attempt ===6){
