@@ -1,8 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { memo, useContext, useEffect,  } from 'react'
+import React, { memo, useContext, useEffect, useState,  } from 'react'
 import { AppContext } from '../screens/Home'
+import Animated, {useSharedValue, interpolate, withTiming, Easing, useAnimatedStyle} from 'react-native-reanimated'
 
 const Letter = ({letterPos, attemptVal}) => {
+
+  
+
+
 
   const {board,
     setGreenKey, 
@@ -10,47 +15,82 @@ const Letter = ({letterPos, attemptVal}) => {
     setYellowKey,
     correctWord, 
     currentAttempt,
-    theme
+    theme } = useContext(AppContext);
 
-  } = useContext(AppContext);
+  const letter = board[attemptVal][letterPos];
+  const correct = correctWord.toUpperCase()[letterPos] === letter;
+  const almost = !correct && letter!="" && correctWord.toUpperCase().includes(letter);
+  const [flipped, setFlipped] = useState(false)
 
-    const letter = board[attemptVal][letterPos];
-    const correct = correctWord.toUpperCase()[letterPos] === letter;
-    const almost = !correct && letter!="" && correctWord.toUpperCase().includes(letter);
+  //Animations - using reanimated
+
+  const flipValue = useSharedValue(0)
+
+  const animatedStyle = useAnimatedStyle(()=>{
+    console.log('correct', correct)
+    console.log('almost', almost)
+    console.log(theme)
+    console.log(flipValue.value)
+    
+
+    const flipRotation = interpolate(flipValue.value, [0,0.5,1], [0, 90, 0])
+
+    const backgroundColor = interpolate(flipValue.value, [0,1], [theme.primary, correct && currentAttempt.attempt> attemptVal? '#04e762' : almost && currentAttempt.attempt>attemptVal? "#ffd500": "#618985"])
+    
+    const textColor = flipValue.value ===1 ? styles.whiteText.color : theme.primary
+
+    return {
+      transform: [{rotateX: withTiming(`${flipRotation}deg`, {duration:500, })}],
+      backgroundColor,
+      color: textColor
+    }
+
+
+  })
+
+  
+  useEffect(()=>{
+    flipValue.value = currentAttempt.attempt> attemptVal ? 1 :0
+
+
+
+  },[currentAttempt.attempt, attemptVal])
+
+  
     
     
    
   useEffect(()=>{
+    
      if (letter!="" && !correct && !almost){
       setDisabledKey((prev)=>[...prev, letter]);
-      //api call to update disabledKey
+      
      };
      if(letter !="" && correct){
       setGreenKey((prev)=> [...prev, letter]);
-      //api call to update greenKey
-
+      
      };
      if (letter!="" && almost){
       setYellowKey((prev)=> [...prev, letter]);
-      //api call to update yellowKey
+      
      };
+    
+
+  },[flipValue.value]);
 
 
-  },[currentAttempt.attempt]);
-
-
-  //animation
+  
 
   
 
   return (
    
     
-       <View style={[styles.letter, {borderColor:theme.primary, backgroundColor:theme.background} ,correct && currentAttempt.attempt>attemptVal? styles.green  : almost && currentAttempt.attempt>attemptVal? styles.yellow : currentAttempt.attempt>attemptVal?styles.grey : null  ]}>
-      <Text style={[styles.text, {color:theme.primary}, currentAttempt.attempt>attemptVal ? styles.whiteText: null]}>
+       <Animated.View style={[styles.letter, animatedStyle]}>
+      <Text style={[styles.text,]}>
         {board[attemptVal][letterPos]}
       </Text>
-    </View>
+    </Animated.View>
     
     
   )
