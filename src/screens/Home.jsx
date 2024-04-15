@@ -33,7 +33,7 @@ import { getData, storeData } from '../utils/storage'
 export const AppContext = createContext();
   
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [profileVisible, setProfileVisible] = useState(false);
 
   
@@ -350,7 +350,7 @@ const Home = () => {
         <Board/>
         <Keyboard/>
 
-        <ProfileModal visible={profileVisible} setVisible={setProfileVisible} />
+        <ProfileModal  visible={profileVisible} setVisible={setProfileVisible} />
     
     
           

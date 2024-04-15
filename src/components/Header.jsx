@@ -15,7 +15,7 @@ const Header = ({ onStatPress, onIconPress, setStatVisible}) => {
       style={styles.title}>Wordle</Text>
       <View style={{flexDirection: 'row', alignItems:'center', gap:12, opacity:0.9}}>
 
-        <TouchableOpacity>
+        <TouchableOpacity >
           <Icon name='help' size={28} />
         </TouchableOpacity>
 

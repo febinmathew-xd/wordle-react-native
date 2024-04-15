@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { getData } from '../utils/storage'
 import { AuthContext } from '../routes/Routes'
 
-const ProfileModal = ({visible, setVisible, }) => {
+const ProfileModal = ({visible, setVisible }) => {
     const {theme, avatar, profileView, settingsView, handleProfle, handleSettings} = useContext(AppContext);
     const {userData} = useContext(AuthContext);
    

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { memo, useContext, useEffect, useState,  } from 'react'
 import { AppContext } from '../screens/Home'
-import Animated, {useSharedValue, interpolate, withTiming, Easing, useAnimatedStyle} from 'react-native-reanimated'
+import Animated, {useSharedValue, interpolate, withTiming, Easing, useAnimatedStyle, withDelay} from 'react-native-reanimated'
 
 const Letter = ({letterPos, attemptVal}) => {
 
@@ -20,47 +20,54 @@ const Letter = ({letterPos, attemptVal}) => {
   const letter = board[attemptVal][letterPos];
   const correct = correctWord.toUpperCase()[letterPos] === letter;
   const almost = !correct && letter!="" && correctWord.toUpperCase().includes(letter);
-  const [flipped, setFlipped] = useState(false)
+  const DELAY = 200
 
   //Animations - using reanimated
 
   const flipValue = useSharedValue(0)
 
   const animatedStyle = useAnimatedStyle(()=>{
-    console.log('correct', correct)
-    console.log('almost', almost)
-    console.log(theme)
-    console.log(flipValue.value)
+    
     
 
-    const flipRotation = interpolate(flipValue.value, [0,0.5,1], [0, 90, 0])
+    const flipRotation = interpolate(flipValue.value, [0,0.5,1], [0, -90, 0])
 
-    const backgroundColor = interpolate(flipValue.value, [0,1], [theme.primary, correct && currentAttempt.attempt> attemptVal? '#04e762' : almost && currentAttempt.attempt>attemptVal? "#ffd500": "#618985"])
+    const backgroundColor = flipValue.value <=0.5? theme.background: flipValue.value>0.5? (correct? '#04e762': almost? '#ffd500':'#618985'): null
+
+    const borderColor = flipValue.value <=0.5? theme.primary: flipValue.value>0.5? (correct? '#04e762': almost? '#ffd500':'#618985'): null
     
-    const textColor = flipValue.value ===1 ? styles.whiteText.color : theme.primary
+    
 
     return {
-      transform: [{rotateX: withTiming(`${flipRotation}deg`, {duration:500, })}],
+      transform: [{rotateX: `${flipRotation}deg`}],
       backgroundColor,
-      color: textColor
+      borderColor
     }
 
 
   })
 
+  const animtedTextStyle = useAnimatedStyle(()=>{
+    const color = flipValue.value <=0.5 ? theme.primary : 'white'
+    return {color}
+  })
+
   
   useEffect(()=>{
-    flipValue.value = currentAttempt.attempt> attemptVal ? 1 :0
+    flipValue.value = currentAttempt.attempt> attemptVal ? withDelay(letterPos*DELAY, withTiming(1, {duration:800})) : 0
 
 
 
-  },[currentAttempt.attempt, attemptVal])
+  },[currentAttempt.attempt])
 
   
     
     
    
   useEffect(()=>{
+
+    
+      
     
      if (letter!="" && !correct && !almost){
       setDisabledKey((prev)=>[...prev, letter]);
@@ -74,9 +81,11 @@ const Letter = ({letterPos, attemptVal}) => {
       setYellowKey((prev)=> [...prev, letter]);
       
      };
+   
+
     
 
-  },[flipValue.value]);
+  },[currentAttempt.attempt]);
 
 
   
@@ -87,10 +96,11 @@ const Letter = ({letterPos, attemptVal}) => {
    
     
        <Animated.View style={[styles.letter, animatedStyle]}>
-      <Text style={[styles.text,]}>
+      <Animated.Text style={[styles.text, animtedTextStyle]}>
         {board[attemptVal][letterPos]}
-      </Text>
+      </Animated.Text>
     </Animated.View>
+    
     
     
   )
