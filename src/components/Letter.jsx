@@ -54,7 +54,7 @@ const Letter = ({letterPos, attemptVal}) => {
 
   
   useEffect(()=>{
-    flipValue.value = currentAttempt.attempt> attemptVal ? withDelay(letterPos*DELAY, withTiming(1, {duration:800})) : 0
+    flipValue.value = currentAttempt.attempt> attemptVal ? withDelay(letterPos*DELAY, withTiming(1, {duration:800, easing:Easing.ease})) : 0
 
 
 
