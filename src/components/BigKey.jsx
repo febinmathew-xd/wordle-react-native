@@ -3,10 +3,12 @@ import React, { useContext } from 'react'
 import Icon from "react-native-vector-icons/MaterialIcons"
 
 import { AppContext } from '../screens/Home'
+import { ThemeContext } from '../App'
 
 const BigKey = ({keyVal}) => {
 
-    const {onDelete, onEnter, gameOver, theme} = useContext(AppContext)
+    const {onDelete, onEnter, gameOver,} = useContext(AppContext)
+    const {theme} = useContext(ThemeContext);
 
     const handlePress =()=> {
         if (gameOver.gameover) return;

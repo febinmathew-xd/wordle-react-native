@@ -2,34 +2,23 @@ import {
   SafeAreaView, 
   StatusBar, 
   StyleSheet, 
-  view, 
-  Modal, 
-  View, 
-  TouchableOpacity, 
-  Text, } from 'react-native'
+   } from 'react-native'
 
 import { 
   Board, 
-  Chart, 
   Header, 
   Keyboard, 
   LoadingIndicator, 
-  ProfileDetails, 
-  Settings, 
-  Statistics, 
-  ToggleNavigation ,
-Error} from '../components'
+  Error} from '../components'
 
 import React, { useState , createContext, useEffect, useCallback, useMemo, useContext,} from 'react'
-import {colorTheme} from '../utils/Colors'
-import { defaultBoard } from '../utils/utls'
 import { wordList } from '../utils/wordList'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { avatarList } from '../utils/utls'
 import ProfileModal from '../components/ProfileModal'
 import Axios from '../utils/api'
 import { AuthContext } from '../routes/Routes'
 import { getData, storeData } from '../utils/storage'
+import { ThemeContext } from '../App'
+
 
 
 export const AppContext = createContext();
@@ -37,7 +26,6 @@ export const AppContext = createContext();
 
 const Home = ({navigation}) => {
   const [profileVisible, setProfileVisible] = useState(false);
-
   
   const [board, setBoard] = useState([
     ["","","","",""],
@@ -56,15 +44,14 @@ const Home = ({navigation}) => {
   const [correctWord, setCorrectWord] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [flipAnimation, setFlipAnimation] = useState(false);
   const [wordSet, setWordSet] = useState(new Set(wordList));
-  const [avatar, setAvatar] = useState(avatarList[1])
-  const [theme, setTheme] = useState(colorTheme[0])
   const [profileView, setProfileView] = useState(true)
   const [settingsView, setSettingsView] = useState(false)
   const [refresh, setRefresh] = useState(0)
-  const {userData} = useContext(AuthContext);
   const [profile, setProfile] = useState({})
+
+  const {theme} = useContext(ThemeContext);
+  const {userData, avatar, setAvatar} = useContext(AuthContext);
   
 
 
@@ -338,8 +325,6 @@ const Home = ({navigation}) => {
     correctWord,
     gameOver,
     avatar,
-    theme,
-    setTheme,
     setAvatar,
     handleProfle,
     handleSettings,
@@ -348,7 +333,7 @@ const Home = ({navigation}) => {
     profile
     
 
-  }), [onDelete, setAvatar, onEnter, onSelectLetter,theme, setTheme,  
+  }), [onDelete, setAvatar, onEnter, onSelectLetter, 
     currentAttempt, disabledKey, yellowKey, greenKey, setGreenKey, setYellowKey, 
     setDisabledKey,correctWord, gameOver, avatar,board, handleProfle, handleSettings, 
     profileView, settingsView, profile])

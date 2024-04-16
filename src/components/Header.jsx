@@ -3,12 +3,16 @@ import React, { useContext } from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { AppContext } from '../screens/Home'
 import Avatar from './Avatar'
+import { ThemeContext } from '../App'
 
 
 
 
 const Header = ({ onStatPress, onIconPress, setStatVisible}) => {
-  const {theme, avatar} = useContext(AppContext);
+  const { avatar} = useContext(AppContext);
+  const {theme} = useContext(ThemeContext)
+
+  
   return (
     <View style={[styles.header, {backgroundColor:theme.primary}]}>
       <Text

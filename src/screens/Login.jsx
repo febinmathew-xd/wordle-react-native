@@ -8,6 +8,7 @@ import { defaultGame } from '../utils/utls'
 import { getPermission } from '../utils/permissions'
 
 
+
 const Login = ({navigation}) => {
 
   const [userName, setUserName] = useState('')
@@ -76,7 +77,9 @@ const Login = ({navigation}) => {
         }).catch((err)=>console.log(err))
 
         storeData('gameData', defaultGame).then(()=>{
+          
           setIsAuthenticated(true)
+          
         }).catch((error)=>console.log(error))
         
       }

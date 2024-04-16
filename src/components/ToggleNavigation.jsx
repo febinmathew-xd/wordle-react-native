@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View , TouchableOpacity} from 'react-native'
 import React, { useContext } from 'react'
-
-import { AppContext } from '../screens/Home'
+import { ThemeContext } from '../App';
 
 const ToggleNavigation = ({onPressProfile, onPressSettings, isProfile, isSettings}) => {
-  const {theme} = useContext(AppContext);
+  const {theme} = useContext(ThemeContext);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={()=>{onPressProfile()}} style={[styles.bar, {borderColor:theme.primary}, isProfile? {backgroundColor:theme.primary}:null]}>

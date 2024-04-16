@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { memo, useContext, useEffect, useState,  } from 'react'
 import { AppContext } from '../screens/Home'
 import Animated, {useSharedValue, interpolate, withTiming, Easing, useAnimatedStyle, withDelay} from 'react-native-reanimated'
+import { ThemeContext } from '../App'
 
 const Letter = ({letterPos, attemptVal}) => {
 
@@ -15,7 +16,9 @@ const Letter = ({letterPos, attemptVal}) => {
     setYellowKey,
     correctWord, 
     currentAttempt,
-    theme } = useContext(AppContext);
+   } = useContext(AppContext);
+
+  const {theme} = useContext(ThemeContext);
 
   const letter = board[attemptVal][letterPos];
   const correct = correctWord.toUpperCase()[letterPos] === letter;

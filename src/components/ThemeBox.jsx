@@ -1,14 +1,20 @@
 import { StyleSheet, Text, View ,TouchableOpacity } from 'react-native'
 import React, { useContext } from 'react'
-import { AppContext } from '../screens/Home'
+import { storeData } from '../utils/storage';
+import { ThemeContext } from '../App';
 
 
 const ThemeBox = ({obj}) => {
    
-    const {setTheme, theme} = useContext(AppContext);
+    const {setTheme, theme} = useContext(ThemeContext);
 
   return (
-    <TouchableOpacity onPress={()=> {setTheme(obj)}}  style={styles.colorContainer}>
+    <TouchableOpacity onPress={()=> {
+      //store the theme to asyncStorage when user choose any theme
+      storeData('theme', obj).then(()=>console.log('theme stored')).catch((error)=>console.log(error))
+      setTheme(obj)
+      
+      }}  style={styles.colorContainer}>
       <View style={{flexDirection:'row'}}>
       <View 
       style={[styles.colorBox , 

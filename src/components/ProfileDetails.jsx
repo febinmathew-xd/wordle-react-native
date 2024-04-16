@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import Avatar from './Avatar'
-import { AppContext } from '../screens/Home'
+import { ThemeContext } from '../App'
 
 const ProfileDetails = ({img, userName, dateJoined, email}) => {
 
@@ -14,7 +14,7 @@ const ProfileDetails = ({img, userName, dateJoined, email}) => {
 
 
 
-  const {theme} = useContext(AppContext)
+  const {theme} = useContext(ThemeContext)
   return (
     <View style={styles.displayPictureContainer} > 
      <Avatar 

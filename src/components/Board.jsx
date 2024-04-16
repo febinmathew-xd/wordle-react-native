@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import Letter from './Letter'
-import { AppContext } from '../screens/Home'
+import { ThemeContext } from '../App'
 
 const Board = () => {
-  const {theme} = useContext(AppContext)
+  const {theme} = useContext(ThemeContext)
   return (
     <View style={[styles.board, {backgroundColor:theme.background ,}]}>
       <View style={{ flexDirection:'row', gap:5}}>

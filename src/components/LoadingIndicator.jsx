@@ -1,14 +1,22 @@
 import { ActivityIndicator, StatusBar, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
+import { ThemeContext } from '../App'
 
 
 const LoadingIndicator = () => {
+  
+  
+    const {theme} = useContext(ThemeContext)
+  
+
+
+
   return (
 
     <View style={styles.loadingContainer}>
-      <StatusBar backgroundColor={"#000814"}/>
+      <StatusBar backgroundColor={theme.background}/>
       
-      <ActivityIndicator size={"large"} color={"#2196f3"} />
+      <ActivityIndicator size={"large"} color={theme.primary} />
     </View>
   )
 }

@@ -6,11 +6,13 @@ import { AppContext } from '../screens/Home'
 import { avatarList } from '../utils/utls'
 import Avatar from './Avatar'
 import { AuthContext } from '../routes/Routes'
-import { clearAllData } from '../utils/storage'
+import { clearAllData, storeData } from '../utils/storage'
+import { ThemeContext } from '../App'
 
 const Settings = () => {
-    const {theme, setAvatar} = useContext(AppContext)
+    const { setAvatar} = useContext(AppContext)
     const {setIsAuthenticated, setUserData} = useContext(AuthContext)
+    const {theme} = useContext(ThemeContext);
 
     const onLogoutPress = () =>{
       
@@ -39,7 +41,13 @@ const Settings = () => {
        <ScrollView horizontal={true}>
         
         {avatarList.map((avatar)=>(
-            <TouchableOpacity onPress={()=> {setAvatar(avatar)}}  style={{padding:4}} key={avatar.id} >
+            <TouchableOpacity onPress={()=> {
+              setAvatar(avatar)
+              storeData('avatar', avatar).then(()=>{}).catch((error)=>console.log(error))
+
+              }}  
+              
+              style={{padding:4}} key={avatar.id} >
                     <Avatar  img={avatar} width={59} borderWidth={2} color={'white'} />
             </TouchableOpacity>
         ))}

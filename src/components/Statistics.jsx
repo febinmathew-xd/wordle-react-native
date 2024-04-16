@@ -2,10 +2,12 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 
 import { AppContext } from '../screens/Home'
+import { ThemeContext } from '../App'
 
 const Statistics = () => {
   
-  const {theme, profile} = useContext(AppContext)
+  const { profile} = useContext(AppContext)
+  const {theme} = useContext(ThemeContext)
   
 
 

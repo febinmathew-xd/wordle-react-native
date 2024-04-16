@@ -1,10 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity} from 'react-native'
 import React, { useContext, memo } from 'react'
 import { AppContext } from '../screens/Home'
+import { ThemeContext } from '../App';
 
 const Key = ({keyVal, disabled, green, yellow}) => {
   
-  const {onSelectLetter, gameOver, theme} = useContext(AppContext);
+  const {onSelectLetter, gameOver,} = useContext(AppContext);
+  const {theme} = useContext(ThemeContext);
   
 
   const handleKeyPress = ()=>{

@@ -3,12 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../screens/Home'
 import { ProfileDetails, ToggleNavigation,Statistics, Chart, Settings } from '.'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { getData } from '../utils/storage'
 import { AuthContext } from '../routes/Routes'
+import { ThemeContext } from '../App'
 
 const ProfileModal = ({visible, setVisible }) => {
-    const {theme, avatar, profileView, settingsView, handleProfle, handleSettings} = useContext(AppContext);
+    const { avatar, profileView, settingsView, handleProfle, handleSettings} = useContext(AppContext);
     const {userData} = useContext(AuthContext);
+    const {theme} = useContext(ThemeContext);
    
 
    

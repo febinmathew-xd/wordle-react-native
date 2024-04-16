@@ -2,10 +2,12 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 
 import { AppContext } from '../screens/Home'
+import { ThemeContext } from '../App'
 
 const Chart = () => {
 
-    const {theme,profile} = useContext(AppContext)
+    const {profile} = useContext(AppContext)
+    const {theme} = useContext(ThemeContext)
 
     const one = profile.guess_distribution_1
     const two = profile.guess_distribution_2
