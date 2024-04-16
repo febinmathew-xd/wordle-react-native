@@ -13,10 +13,12 @@ import {
   Chart, 
   Header, 
   Keyboard, 
+  LoadingIndicator, 
   ProfileDetails, 
   Settings, 
   Statistics, 
-  ToggleNavigation } from '../components'
+  ToggleNavigation ,
+Error} from '../components'
 
 import React, { useState , createContext, useEffect, useCallback, useMemo, useContext,} from 'react'
 import {colorTheme} from '../utils/Colors'
@@ -52,7 +54,7 @@ const Home = ({navigation}) => {
   const [yellowKey, setYellowKey] = useState([]);
   const [gameOver, setGameOver] = useState({gameover:false, guessedWord:false});
   const [correctWord, setCorrectWord] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [flipAnimation, setFlipAnimation] = useState(false);
   const [wordSet, setWordSet] = useState(new Set(wordList));
@@ -60,8 +62,10 @@ const Home = ({navigation}) => {
   const [theme, setTheme] = useState(colorTheme[0])
   const [profileView, setProfileView] = useState(true)
   const [settingsView, setSettingsView] = useState(false)
+  const [refresh, setRefresh] = useState(0)
   const {userData} = useContext(AuthContext);
   const [profile, setProfile] = useState({})
+  
 
 
 
@@ -73,18 +77,24 @@ const Home = ({navigation}) => {
 
   
   useEffect(()=>{
+    setLoading(true)
+    setError(false)
 
     //api call to get profile details
     
     Axios.get(`profile/?userId=${userData?.id}`).then((response)=>{
+      if (response){
+        setProfile(response.data)
+        fetchAnswer()
+      }
       
-      setProfile(response.data)
     }).catch((error)=>{
-      console.log(error)
+      setError(true)
       if(error?.response?.data?.error){
         console.log(error.response.data.error)
+        
       }
-    })
+    }).finally(()=>setLoading(false))
 
     //api call to get correct answer 
 
@@ -98,6 +108,7 @@ const Home = ({navigation}) => {
       try{
         const answer = await getData("correctWord")
         console.log("answer loadgame data ", answer)
+        
 
         if(answer===correctWord || answer===null){
           try{
@@ -114,6 +125,7 @@ const Home = ({navigation}) => {
 
           }catch(error){
             console.log(error)
+            setError(true)
           }
         }else{
           storeData("correctWord", correctWord).then(()=>{
@@ -121,7 +133,11 @@ const Home = ({navigation}) => {
           }).catch((error)=>console.log(error))
           storeData("gameData", {board:board, currentAttempt:currentAttempt, gameOver:gameOver}).then(()=>{
             console.log("default game data saved when correct answer changed")
-          }).catch((error)=>console.log(error))
+          }).catch((error)=>{
+            console.log(error)
+            setError(true)
+          
+          })
         }
 
 
@@ -136,17 +152,20 @@ const Home = ({navigation}) => {
     const fetchAnswer = async ()=>{
       try{
         const response = await Axios.get('get/answer/')
+        if (response){
         setCorrectWord(wordList[response.data.correct_answer])
         console.log("is there",response.data)
         console.log(correctWord)
         loadGameData(wordList[response?.data?.correct_answer])
+        }
         
       }catch(error){
         console.log("answer fetching axios error", error)
+        setError(true)
       }
     };
 
-    fetchAnswer();
+    
    
     
     
@@ -159,7 +178,7 @@ const Home = ({navigation}) => {
     
 
 
-  },[])
+  },[refresh])
   
 
 
@@ -300,6 +319,10 @@ const Home = ({navigation}) => {
     setProfileView(false)
   },[])
 
+  const handleRefresh = useCallback(()=>{
+    setRefresh(prev=>prev+1)
+  },[])
+
   const values = useMemo(()=>({
     onDelete,
     onEnter,
@@ -344,6 +367,8 @@ const Home = ({navigation}) => {
   return (
     <AppContext.Provider
     value={values}>
+    {loading? < LoadingIndicator/>  : error? <Error handlePress={handleRefresh} theme={theme} /> :
+    <>
     <StatusBar backgroundColor={theme.primary}/>
     <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]}>
         <Header onStatPress={handleProfle} onIconPress={handleSettings} setStatVisible={setProfileVisible}/>
@@ -357,6 +382,8 @@ const Home = ({navigation}) => {
         
         
     </SafeAreaView>
+    </>
+}
     </AppContext.Provider>
   )
 }

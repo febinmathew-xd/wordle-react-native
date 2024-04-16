@@ -11,7 +11,8 @@ import Chart from "./Chart";
 import Settings from "./Settings";
 import ProfileModal from "./ProfileModal";
 import LoadingIndicator from "./LoadingIndicator";
+import Error from "./Error";
 
 
 export {Btn, Header, InputField, Logo, Board, Keyboard,
-     ProfileDetails, Statistics, ToggleNavigation, Chart,Settings, ProfileModal, LoadingIndicator}
+     ProfileDetails, Statistics, ToggleNavigation, Chart,Settings, ProfileModal, LoadingIndicator, Error}
