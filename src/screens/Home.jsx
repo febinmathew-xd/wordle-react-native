@@ -59,8 +59,6 @@ const Home = ({navigation}) => {
   const {theme} = useContext(ThemeContext);
   const {userData, avatar, setAvatar} = useContext(AuthContext);
 
-  console.log('home render');
-
   useEffect(() => {
     setLoading(true);
     setError(false);
