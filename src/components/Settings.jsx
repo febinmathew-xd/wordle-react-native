@@ -17,7 +17,7 @@ import {ThemeContext} from '../App';
 
 const Settings = () => {
   const {setAvatar} = useContext(AppContext);
-  const {setIsAuthenticated, setUserData} = useContext(AuthContext);
+  const {setIsAuthenticated} = useContext(AuthContext);
   const {theme} = useContext(ThemeContext);
 
   const onLogoutPress = () => {
@@ -56,7 +56,7 @@ const Settings = () => {
           marginLeft: 10,
           paddingVertical: 15,
         }}>
-        Avatar
+        Avatars
       </Text>
       <ScrollView horizontal={true}>
         {avatarList.map(avatar => (

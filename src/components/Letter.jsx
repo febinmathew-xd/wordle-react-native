@@ -27,6 +27,7 @@ const Letter = ({letterPos, attemptVal}) => {
   const correct = correctWord.toUpperCase()[letterPos] === letter;
   const almost =
     !correct && letter != '' && correctWord.toUpperCase().includes(letter);
+
   const DELAY = 200;
 
   //Animations - using reanimated

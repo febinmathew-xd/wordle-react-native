@@ -7,6 +7,7 @@ import {
   LoadingIndicator,
   Error,
   Message,
+  RevailAnswer,
 } from '../components';
 
 import React, {
@@ -23,6 +24,7 @@ import Axios from '../utils/api';
 import {AuthContext} from '../routes/Routes';
 import {getData, storeData} from '../utils/storage';
 import {ThemeContext} from '../App';
+import {praises} from '../utils/utls';
 
 export const AppContext = createContext();
 
@@ -55,6 +57,7 @@ const Home = ({navigation}) => {
   const [refresh, setRefresh] = useState(0);
   const [profile, setProfile] = useState({});
   const [messageVisible, setMessageVisible] = useState(false);
+  const [praise, setPraise] = useState({isPraise: false, message: ''});
 
   const {theme} = useContext(ThemeContext);
   const {userData, avatar, setAvatar} = useContext(AuthContext);
@@ -222,8 +225,19 @@ const Home = ({navigation}) => {
         setMessageVisible(false);
       }, 1000);
     }
+    //if choosen correct word..gaveover
     if (currentWord.toLowerCase() === correctWord) {
       setGameOver({gameover: true, guessedWord: true});
+      //show praise after animation ends
+      const msg = praises[Math.floor(Math.random() * praises.length)];
+
+      setTimeout(() => {
+        setPraise({isPraise: true, message: msg});
+        Vibration.vibrate(350);
+        setTimeout(() => {
+          setPraise({isPraise: false, message: ''});
+        }, 5000);
+      }, 1600);
 
       storeData('gameData', {
         board: board,
@@ -296,9 +310,14 @@ const Home = ({navigation}) => {
         updateWonAndGuess(id, data);
       }
     }
-
-    if (currentAttempt.attempt === 6) {
+    //gameover: not guessed correct
+    if (currentAttempt.attempt + 1 === 6) {
       setGameOver({gameover: true, guessedWord: false});
+
+      //vibration for correct answer revail
+      setTimeout(() => {
+        Vibration.vibrate(300);
+      }, 4600);
 
       storeData('gameData', {
         board: board,
@@ -399,6 +418,7 @@ const Home = ({navigation}) => {
             />
 
             {messageVisible && <Message message={'word not in list'} />}
+            {praise.isPraise && <Message message={praise.message} />}
           </SafeAreaView>
         </>
       )}

@@ -1,10 +1,19 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useContext} from 'react';
+import {StyleSheet, Text, Vibration, View} from 'react-native';
+import React, {useContext, useState} from 'react';
 import Letter from './Letter';
 import {ThemeContext} from '../App';
+import RevailAnswer from './RevailAnswer';
+import {AppContext} from '../screens/Home';
 
 const Board = () => {
   const {theme} = useContext(ThemeContext);
+  const {gameOver, correctWord} = useContext(AppContext);
+  const [visible, setVisible] = useState(false);
+  setTimeout(() => {
+    const isVisible = gameOver.gameover && !gameOver.guessedWord;
+
+    setVisible(isVisible);
+  }, 4600);
 
   return (
     <View style={[styles.board, {backgroundColor: theme.background}]}>
@@ -55,6 +64,7 @@ const Board = () => {
         <Letter letterPos={3} attemptVal={5} />
         <Letter letterPos={4} attemptVal={5} />
       </View>
+      {visible && <RevailAnswer text={correctWord} />}
     </View>
   );
 };

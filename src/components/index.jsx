@@ -13,6 +13,7 @@ import ProfileModal from './ProfileModal';
 import LoadingIndicator from './LoadingIndicator';
 import Error from './Error';
 import Message from './Message';
+import RevailAnswer from './RevailAnswer';
 
 export {
   Btn,
@@ -30,4 +31,5 @@ export {
   ProfileModal,
   LoadingIndicator,
   Error,
+  RevailAnswer,
 };
